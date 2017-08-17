@@ -1,9 +1,10 @@
 FILTER="appdynamics\|app-dynamics"
 
-if [ `echo $VCAP_SERVICES | grep -c $FILTER ` -gt 0 ];
+SERVICE_TYPE=$(echo "${VCAP_SERVICES-}" | $JQ .[][].name)
+
+if [ `echo $SERVICE_TYPE | grep -c $FILTER` -gt 0 ];
 then
-#  key="appdynamics"
-  key="user-provided"
+  key="$(echo "${VCAP_SERVICES-}" | $JQ keys | $JQ .[])"
   APPDYNAMICS_CONTROLLER_HOST_NAME=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .["host-name"] ')
   APPDYNAMICS_CONTROLLER_PORT=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .port ')
   APPDYNAMICS_AGENT_ACCOUNT_NAME=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .["account-name"] ')
