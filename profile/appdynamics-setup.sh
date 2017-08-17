@@ -4,7 +4,7 @@ SERVICE_TYPE=$(echo "${VCAP_SERVICES-}" | $JQ .[][].name)
 
 if [ `echo $SERVICE_TYPE | grep -c $FILTER` -gt 0 ];
 then
-  key="$(echo "${VCAP_SERVICES-}" | $JQ keys | $JQ .[])"
+  key="$(echo "${VCAP_SERVICES-}" | jq keys | $jq .[])"
   APPDYNAMICS_CONTROLLER_HOST_NAME=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .["host-name"] ')
   APPDYNAMICS_CONTROLLER_PORT=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .port ')
   APPDYNAMICS_AGENT_ACCOUNT_NAME=$(echo "${VCAP_SERVICES-}" | jq -r '.['\""$key"\"'][0] | .credentials | .["account-name"] ')
