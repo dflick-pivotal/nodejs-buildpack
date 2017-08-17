@@ -1,6 +1,6 @@
 FILTER="appdynamics\|app-dynamics"
 
-SERVICE_TYPE=$(echo "${VCAP_SERVICES-}" | $JQ .[][].name)
+SERVICE_TYPE=$(echo "${VCAP_SERVICES-}" | jq .[][].name)
 
 if [ `echo $SERVICE_TYPE | grep -c $FILTER` -gt 0 ];
 then
